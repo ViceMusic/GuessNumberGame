@@ -24,6 +24,14 @@
 
 //使用绑定事件的方式来进行
 
+
+//关于操作css
+//css相关的设置直接操作body这个dom元素即可
+//document.querySelector('body').style
+//css这个属性是挂载body下面的
+
+
+
 //定义秘密数字
 let num=Math.trunc(Math.random()*20)+1
 
@@ -37,32 +45,46 @@ const score=document.querySelector('.score')
 const highScore=document.querySelector('.highscore')
 //给按钮绑定事件
 
+const body=document.querySelector('body')
 
 //查询数字按钮
 const dom=document.querySelector('.check')
 dom.addEventListener('click',()=>{
     //获取目前的数字
     let inputNum=document.querySelector('.guess').value
+    //第一种情况,没有数字
     if(!inputNum){
         mes.textContent="_(:3|∠)_ where is number?"
-    }else if(inputNum>num){
+    }
+    //第二种情况,数字太小
+    else if(inputNum>num){
         mes.textContent="too big"
-    }else  if(inputNum<num){
+        score.textContent--
+    }
+    //第三种情况,数字过大
+    else  if(inputNum<num){
         mes.textContent="too small"
-    }else{
+        score.textContent--
+    }
+    //第四种情况,数字匹配正确
+    else{
         mes.textContent="success"
-        score.textContent++
+        document.querySelector('.number').textContent=inputNum
+        body.style.background='green'
+        if(score.textContent>highScore.textContent){
+            highScore.textContent=score.textContent;
+        }
     }
 })
 
 //again按钮
 const dom_again=document.querySelector('.again')
 dom_again.addEventListener('click',()=>{
-   if(score.textContent>highScore.textContent){
-       highScore.textContent=score.textContent;
-   }
-   score.textContent='0'
+
+   score.textContent='20'
    mes.textContent='Start guessing...'
+   document.querySelector('.number').textContent='?'
+   body.style.background='black'
     //重新生成数字
    num=Math.trunc(Math.random()*20)+1
 })
